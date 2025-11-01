@@ -18,7 +18,7 @@ class App:
             self.y += 1
 
     def draw(self):
-        pyxel.cls(7)
+        pyxel.cls(6)
         pyxel.rect(self.x, self.y, 8, 8, 9)
 
 App()
