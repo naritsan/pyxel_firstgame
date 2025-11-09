@@ -1,50 +1,51 @@
 import pyxel
-import math
+
+class Circle:
+    def __init__(self, x, y, r, col):
+        self.x = x
+        self.y = y
+        self.r = r
+        self.col = col
+
+    def intersects(self, other):
+        if isinstance(other, Circle):
+            dx = self.x - other.x
+            dy = self.y - other.y
+            dist_square = dx * dx + dy * dy
+            return dist_square <= (self.r + other.r) ** 2
+        return False
+
+    def draw(self):
+        pyxel.circ(self.x, self.y, self.r, self.col)
+        pyxel.pset(self.x, self.y, 0)
 
 class App:
     def __init__(self):
         pyxel.init(160, 120)
-        self.x = 0
-        self.y = 0
-        self.circ1_r = 8
-        self.circ1_col = 8
-        self.circ2_x = 80
-        self.circ2_y = 60
-        self.circ2_r = 16
-        self.circ2_col = 9
+        self.player_circle = Circle(0, 0, 8, 8)
+        self.static_circle = Circle(80, 60, 16, 9)
+
         pyxel.run(self.update, self.draw)
 
     def update(self):
         if pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT):
-            self.x -= 1
+            self.player_circle.x -= 1
         elif pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT):
-            self.x += 1
+            self.player_circle.x += 1
         elif pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_UP):
-            self.y -= 1
+            self.player_circle.y -= 1
         elif pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_DOWN):
-            self.y += 1
-        
-        dx = self.circ2_x - self.x
-        dy = self.circ2_y - self.y
-        dist = math.sqrt(dx * dx + dy * dy)
+            self.player_circle.y += 1
 
-        if dist < self.circ1_r + self.circ2_r:
-            self.collision = True
+        if self.player_circle.intersects(self.static_circle):
+            self.player_circle.col = 11
         else:
-            self.collision = False
+            self.player_circle.col = 8
 
     def draw(self):
         pyxel.cls(6)
 
-        # circ2
-        pyxel.circ(self.circ2_x, self.circ2_y, self.circ2_r, self.circ2_col)
-        pyxel.pset(self.circ2_x, self.circ2_y, 0)
+        self.static_circle.draw()
+        self.player_circle.draw()
 
-        # circ1
-        pyxel.circ(self.x, self.y, self.circ1_r, self.circ1_col)
-        pyxel.pset(self.x, self.y, 0)
-
-
-        if hasattr(self, 'collision') and self.collision:
-            pyxel.text(0, 0, "Collision!", 8)
 App()
