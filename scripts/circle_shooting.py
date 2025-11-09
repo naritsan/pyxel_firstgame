@@ -67,7 +67,7 @@ class App:
         if self.is_down_pressed() and self.player.y + self.player.speed + self.player.r <= pyxel.height:
             self.player.y += self.player.speed
 
-        if pyxel.btnp(pyxel.KEY_SPACE)  and len(self.bullet_list) < 3:
+        if (pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_B)) and len(self.bullet_list) < 3:
             self.bullet_list.append(Bullet(self.player.x, self.player.y - self.player.r, 2, 9,3))
         
         for enemy in self.enemy_list:
