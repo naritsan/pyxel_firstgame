@@ -1,0 +1,56 @@
+import pyxel
+import math
+
+
+class Rectangle:    
+    def __init__(self, x, y, w, h, col):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.col = col
+
+    def draw(self):
+        pyxel.rect(self.x, self.y, self.w, self.h, self.col)
+        pyxel.pset(self.x, self.y, 0)
+    
+    def intersects(self, other):
+        if isinstance(other, Rectangle):
+            return (
+                        self.x + self.w < other.x or
+                        self.x > other.x + other.w or
+                        self.y + self.h < other.y or
+                        self.y > other.y + other.h
+                    )
+        return False
+
+class App:
+    def __init__(self):
+        pyxel.init(160, 120)
+        self.player = Rectangle(x=30, y=40, w=20, h=15, col=9)
+        self.obstacle = Rectangle(x=80, y=60, w=30, h=20, col=8)
+
+        pyxel.run(self.update, self.draw)
+
+    def update(self):
+        if pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT):
+            self.player.x -= 1
+        if pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT):
+            self.player.x += 1
+        if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_UP):
+            self.player.y -= 1
+        if pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_DOWN):
+            self.player.y += 1
+        
+
+    def draw(self):
+        pyxel.cls(6)
+
+        # 矩形の描画
+        self.obstacle.draw()
+        self.player.draw()
+
+
+        if self.player.intersects(self.obstacle):
+            pyxel.text(50, 10, "not collide", 0)
+App()
