@@ -42,25 +42,17 @@ class Circle:
             return dist_square <= (self.r + other.r) ** 2
         
         if isinstance(other, Rectangle):
-            if self.x < other.x:
-                self.closest_rect_x = other.x
-            elif self.x > other.x + other.w - 1:
-                self.closest_rect_x = other.x + other.w - 1
-            else:
-                self.closest_rect_x = self.x
 
+            # 矩形の辺における、円の中心点との最近傍点をx,yそれぞれで求める。
+            self.closest_rect_x = max(other.x,min(self.x,other.x + other.w -1))
+            self.closest_rect_y = max(other.y,min(self.y,other.y + other.h -1))
 
-            if self.y < other.y:
-                self.closest_rect_y = other.y
-            elif self.y > other.y + other.h - 1:
-                self.closest_rect_y = other.y + other.h - 1
-            else:
-                self.closest_rect_y = self.y
-
+            # 最近傍点との距離を求める
             dx = self.x - self.closest_rect_x
             dy = self.y - self.closest_rect_y
 
-            return dx ** 2 + dy **2 < self.r **2
+            # 最近傍点との距離が円の半径よりも短ければ衝突している
+            return dx ** 2 + dy **2 <= self.r **2
 
         return False
 
