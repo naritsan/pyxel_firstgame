@@ -17,10 +17,10 @@ class Rectangle:
     def intersects(self, other):
         if isinstance(other, Rectangle):
             return (
-                        self.x + self.w < other.x or
-                        self.x > other.x + other.w or
-                        self.y + self.h < other.y or
-                        self.y > other.y + other.h
+                        self.x + self.w >= other.x and
+                        self.x <= other.x + other.w and
+                        self.y + self.h >= other.y and
+                        self.y <= other.y + other.h
                     )
         return False
 
@@ -52,5 +52,5 @@ class App:
 
 
         if self.player.intersects(self.obstacle):
-            pyxel.text(50, 10, "not collide", 0)
+            pyxel.text(50, 10, "collide", 0)
 App()
