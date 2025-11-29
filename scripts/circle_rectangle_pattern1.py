@@ -87,6 +87,7 @@ class Circle:
             return \
             (
                 is_vertical_collide or 
+                is_horizontal_collide or
                 is_left_top_collide or 
                 is_right_top_collide or 
                 is_left_bottom_collide or 
