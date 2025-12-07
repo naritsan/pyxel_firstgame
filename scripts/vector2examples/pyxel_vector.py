@@ -2,16 +2,58 @@ import pyxel
 import math
 
 class Vector2:    
-    def __init__(self,x,y):
+    # コンストラクタ
+    def __init__(self,x:float,y:float):
         self.x: float = x
         self.y: float = y
 
-    def magnitude(self):
-        return math.sqrt(self.x**2+self.y**2)
+### ベクトル演算 ##
 
-    @staticmethod
-    def normalize(v:Vector2):
-        return Vector2(v.x / v.magnitude(),v.y / v.magnitude())
+    # 加算
+    def __add__(self,other:Vector2):
+        return Vector2(self.x + other.x, self.y + other.y)
+
+    # 減算
+    def __sub__(self,other:Vector2):
+        return Vector2(self.x - other.x, self.y - other.y)
+
+    # 乗算（スカラー倍）
+    def __mul__(self,scalar):
+        return Vector2(self.x * scalar, self.y * scalar)
+    # 式の左右が逆の場合にも対応
+    __rmul__ = __mul__
+
+## 定数 ##
+
+    # ベクトルの長さ
+    def magnitude(self) -> float:
+        return math.hypot(self.x,self.y)
+
+    # 内積
+    def dot(self,other:Vector2) -> float:
+        return (self.x*other.x) + (self.y*other.y)
+
+    # 外積
+    def cross(self,other:Vector2) -> float:
+        return (self.x*other.y) - (self.y*other.x)
+
+## ベクトル変換 ##
+
+    # 正規化
+    def normalized(self) -> Vector2:
+        if self.magnitude() == 0:
+            return Vector2(0,0)
+        return Vector2(self.x / self.magnitude(),self.y / self.magnitude())
+
+    # 射影
+    def proj(self,other:Vector2) -> Vector2:
+        n = other.normalized()
+        len = self.dot(n)
+        return Vector2(n.x*len,n.y*len)
+
+    # 垂線
+    def perp(self, other):
+        return self - self.proj(other)
 
 class Line:
     def __init__(self,p,v):

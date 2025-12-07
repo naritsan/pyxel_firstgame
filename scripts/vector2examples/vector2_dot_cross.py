@@ -24,22 +24,22 @@ class App:
         # 直線上の一点からマウス位置までの線分
         self.line2p = Line(self.p1,Vector2(self.p1.x - self.line1.p.x,self.p1.y - self.line1.p.y))
          # 直線方向のベクトルとマウス位置方向のベクトルの内積 / 外積
-        self.dot = (self.line1.v.x*self.line2p.v.x) + (self.line1.v.y*self.line2p.v.y)
-        self.cross = (self.line1.v.x*self.line2p.v.y) - (self.line1.v.y*self.line2p.v.x)
+        self.dot = self.line1.v.dot(self.line2p.v)
+        self.cross = self.line1.v.cross(self.line2p.v)
 
         # ベクトル間の角度（弧度法）
         self.degrees = (math.degrees(math.atan2(self.cross,self.dot)))
 
         # 直線方向のベクトルを正規化
-        self.line1norm = Vector2.normalize(self.line1.v)
+        # self.line1norm = self.line1.v.normalized()
 
         # マウス位置方向のベクトルの射影
-        self.proj_length = self.line1norm.x*self.line2p.v.x + self.line1norm.y*self.line2p.v.y
-        self.proj = Vector2(self.line1norm.x*self.proj_length,self.line1norm.y*self.proj_length)
+        self.proj =  self.line2p.v.proj(self.line1.v)
+        self.proj_length = self.proj.magnitude()
 
         # 射影からマウス位置までの距離（高さ）
-        self.perp_length = (self.line1norm.x*self.line2p.v.y) - (self.line1norm.y*self.line2p.v.x)
-        self.perp = Vector2(self.line2p.v.x-self.proj.x, self.line2p.v.y-self.proj.y)
+        self.perp = self.line2p.v.perp(self.line1.v)
+        self.perp_length = self.perp.magnitude()
         
 
     def draw(self):
@@ -55,6 +55,7 @@ class App:
         
         # 射影ベクトルを視覚的に描画
         pyxel.line(self.line1.p.x,self.line1.p.y,self.line1.p.x+self.proj.x,self.line1.p.y+self.proj.y,8)
+        # # 垂線
         pyxel.line(
                     self.line1.p.x+self.proj.x,
                     self.line1.p.y+self.proj.y,
