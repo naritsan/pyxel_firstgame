@@ -10,7 +10,6 @@ class Rectangle:
         self.h = h
         self.col = col
 
-
     def draw(self):
         pyxel.rect(self.x, self.y, self.w, self.h, self.col)
         pyxel.pset(self.x, self.y, 0)
