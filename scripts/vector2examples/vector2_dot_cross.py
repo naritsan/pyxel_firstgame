@@ -12,7 +12,7 @@ class App:
         # 初期値　マウスの座標で遷移
         self.p1 = Vector2(100,0)
 
-        self.line1 = Line(Vector2(20,50),Vector2(50,50))
+        self.line1 = Line(Vector2(80,60),Vector2(50,-50))
 
         pyxel.run(self.update, self.draw)
 
@@ -30,10 +30,16 @@ class App:
         # ベクトル間の角度（弧度法）
         self.degrees = (math.degrees(math.atan2(self.cross,self.dot)))
 
-        # マウス位置方向のベクトルの射影
+        # 直線方向のベクトルを正規化
         self.line1norm = Vector2.normalize(self.line1.v)
+
+        # マウス位置方向のベクトルの射影
         self.proj_length = self.line1norm.x*self.line2p.v.x + self.line1norm.y*self.line2p.v.y
         self.proj = Vector2(self.line1norm.x*self.proj_length,self.line1norm.y*self.proj_length)
+
+        # 射影からマウス位置までの距離（高さ）
+        self.perp_length = (self.line1norm.x*self.line2p.v.y) - (self.line1norm.y*self.line2p.v.x)
+        self.perp = Vector2(self.line2p.v.x-self.proj.x, self.line2p.v.y-self.proj.y)
         
 
     def draw(self):
@@ -49,12 +55,20 @@ class App:
         
         # 射影ベクトルを視覚的に描画
         pyxel.line(self.line1.p.x,self.line1.p.y,self.line1.p.x+self.proj.x,self.line1.p.y+self.proj.y,8)
+        pyxel.line(
+                    self.line1.p.x+self.proj.x,
+                    self.line1.p.y+self.proj.y,
+                    self.line1.p.x+self.proj.x + self.perp.x,
+                    self.line1.p.y+self.proj.y + self.perp.y,
+                    3
+                )
 
         pyxel.text(0,0,f"dot: {self.dot}",0)
         pyxel.text(0,10,f"cross: {self.cross}",0)
         pyxel.text(0,20,f"degrees: {self.degrees}",0)
         pyxel.text(0,30,f"magnitude: {self.line2p.v.magnitude()}",0)
         pyxel.text(0,40,f"proj_length: {self.proj_length}",0)
+        pyxel.text(0,50,f"perp_length: {self.perp_length}",0)
 
 
 
