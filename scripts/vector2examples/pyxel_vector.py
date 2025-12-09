@@ -70,3 +70,17 @@ class Line:
         y2 = self.p.y + self.v.y * L
 
         pyxel.line(int(x1), int(y1), int(x2), int(y2), 7)
+
+class Ray:
+    def __init__(self,p,v):
+        self.p:Vector2 = p
+        self.v:Vector2 = v
+
+    def draw_line_from_point(self):
+        # ベクトルを大きく伸ばして画面外まで届かせる
+        L = 300  # 画面より大きければOK(例: Pyxel デフォルト 160x120)
+        
+        x2 = self.p.x + self.v.x * L
+        y2 = self.p.y + self.v.y * L
+
+        pyxel.line(int(self.p.x), int(self.p.y), int(x2), int(y2), 7)
