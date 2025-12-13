@@ -39,7 +39,7 @@ class App:
     def draw(self):
         pyxel.cls(6)
         # （擬似的に）直線を描画
-        self.line1.draw_line_from_point()
+        self.line1.draw()
         pyxel.pset(self.p1.x,self.p1.y,0)
 
         # # 直線上の点からマウス位置までの線分

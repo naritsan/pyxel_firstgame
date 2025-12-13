@@ -60,7 +60,7 @@ class Line:
         self.p:Vector2 = p
         self.v:Vector2 = v
 
-    def draw_line_from_point(self):
+    def draw(self):
         # ベクトルを大きく伸ばして画面外まで届かせる
         L = 300  # 画面より大きければOK(例: Pyxel デフォルト 160x120)
         
@@ -76,7 +76,7 @@ class Ray:
         self.p:Vector2 = p
         self.v:Vector2 = v
 
-    def draw_line_from_point(self):
+    def draw(self):
         # ベクトルを大きく伸ばして画面外まで届かせる
         L = 300  # 画面より大きければOK(例: Pyxel デフォルト 160x120)
         
@@ -84,3 +84,14 @@ class Ray:
         y2 = self.p.y + self.v.y * L
 
         pyxel.line(int(self.p.x), int(self.p.y), int(x2), int(y2), 7)
+
+class Segment:
+    def __init__(self,p,v):
+        self.p:Vector2 = p
+        self.v:Vector2 = v
+
+    def draw(self):
+        # 始点からベクトルの長さ分だけ線分を描画する
+        
+        endp:Vector2 = self.p + self.v
+        pyxel.line(int(self.p.x), int(self.p.y), int(endp.x), int(endp.y), 7)
