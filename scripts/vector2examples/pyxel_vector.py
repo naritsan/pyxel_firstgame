@@ -95,3 +95,13 @@ class Segment:
         
         endp:Vector2 = self.p + self.v
         pyxel.line(int(self.p.x), int(self.p.y), int(endp.x), int(endp.y), 7)
+
+class Circle:
+    def __init__(self,p,r):
+        self.p:Vector2 = p
+        self.r:float = r
+
+    def draw(self):
+        # 始点からベクトルの長さ分だけ線分を描画する
+        pyxel.circb(self.p.x,self.p.y,self.r,0)
+        
