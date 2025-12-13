@@ -9,7 +9,7 @@ from pyxel_vector import Circle
 class App:
     def __init__(self):
         pyxel.init(160, 120)
-        # pyxel.mouse(True)
+        pyxel.mouse(True)
 
         # 初期値　マウスの座標で遷移
         self.p1 = Vector2(100,0)
